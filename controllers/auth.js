@@ -1,19 +1,27 @@
-import User from "../models/user.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
-export const checkAuth = (req, res) => {
+const checkAuth = (req, res) => {
   try {
     res.status(200).json({
       success: true,
-      data: { user: req.user, token: req.cookies.token },
+      data: { user: req.user, token: req.headers.authorization.split(" ")[1] },
     });
   } catch (e) {
     res.status(500).json({ success: false, data: e.message });
   }
 };
 
-export const registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { name, surname, email, password } = req.body;
 
@@ -44,7 +52,14 @@ export const registerUser = async (req, res) => {
   }
 };
 
-export const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { email, password } = req.body;
 
@@ -71,4 +86,10 @@ export const loginUser = async (req, res) => {
   } catch (e) {
     res.status(500).json({ success: false, data: e.message });
   }
+};
+
+module.exports = {
+  checkAuth,
+  registerUser,
+  loginUser,
 };

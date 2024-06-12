@@ -1,8 +1,13 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
-export const authMiddleware = async (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   try {
-    const token = req.cookies?.token;
+    const splitted = req.headers?.authorization.split(" ");
+
+    if (splitted[0] !== "Bearer")
+      return res.status(401).json({ success: false, data: "Invalid token!" });
+
+    const token = splitted[1];
     if (!token)
       return res.status(401).json({ success: false, data: "Token not found!" });
 
@@ -14,6 +19,8 @@ export const authMiddleware = async (req, res, next) => {
 
     next();
   } catch (e) {
-    res.status(500).json({ success: false, data: e.message });
+    res.status(500).json({ success: false, data: "Unauthorized" });
   }
 };
+
+module.exports = authMiddleware;

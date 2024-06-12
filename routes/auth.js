@@ -1,11 +1,52 @@
-import express from "express";
-import { checkAuth, loginUser, registerUser } from "../controllers/auth.js";
-import { authMiddleware } from "../middlewares/auth.js";
+const express = require("express");
+const { body } = require("express-validator");
+const authMiddleware = require("../middlewares/auth");
+const authController = require("../controllers/auth");
 
 const router = express.Router();
 
-router.get("/check", authMiddleware, checkAuth);
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.get("/check", authMiddleware, authController.checkAuth);
+router.post(
+  "/register",
+  [
+    body("email")
+      .notEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Invalid email"),
+    body("password")
+      .notEmpty()
+      .withMessage("Password is required")
+      .isStrongPassword()
+      .withMessage("Password must be strong"),
+    body("name")
+      .notEmpty()
+      .withMessage("Name is required")
+      .isString()
+      .withMessage("Name must be string"),
+    body("surname")
+      .notEmpty()
+      .withMessage("Surname is required")
+      .isString()
+      .withMessage("Surname must be string"),
+  ],
+  authController.registerUser,
+);
+router.post(
+  "/login",
+  [
+    body("email")
+      .notEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Invalid email"),
+    body("password")
+      .notEmpty()
+      .withMessage("Password is required")
+      .isStrongPassword()
+      .withMessage("Password must be strong"),
+  ],
+  authController.loginUser,
+);
 
-export default router;
+module.exports = router;

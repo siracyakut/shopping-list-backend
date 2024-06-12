@@ -1,10 +1,18 @@
-import BBY from "bestbuy";
-
-const bby = BBY({
+const { validationResult } = require("express-validator");
+const bby = require("bestbuy")({
   key: process.env.BESTBUY_API_KEY,
+  maxRetries: 10,
+  retryInterval: 5,
 });
 
-export const searchProduct = (req, res) => {
+const searchProduct = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { query, page } = req.body;
 
@@ -30,9 +38,12 @@ export const searchProduct = (req, res) => {
   }
 };
 
-export const getProductById = (req, res) => {
+const getProductById = (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!id)
+      return res.status(400).json({ success: false, data: "ID is required" });
 
     bby
       .products(`sku in (${id})`, {
@@ -51,4 +62,9 @@ export const getProductById = (req, res) => {
   } catch (e) {
     res.status(500).json({ success: false, data: e.message });
   }
+};
+
+module.exports = {
+  getProductById,
+  searchProduct,
 };

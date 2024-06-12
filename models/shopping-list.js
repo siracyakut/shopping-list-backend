@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const shoppingListSchema = mongoose.Schema({
   name: {
@@ -19,4 +19,4 @@ const shoppingListSchema = mongoose.Schema({
 
 const ShoppingList = mongoose.model("shopping-lists", shoppingListSchema);
 
-export default ShoppingList;
+module.exports = ShoppingList;

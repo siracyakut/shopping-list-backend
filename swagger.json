@@ -5,12 +5,25 @@
     "version": "1.0.0",
     "description": ""
   },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Bearer token to access these api endpoints"
+    }
+  },
   "host": "localhost:5000",
   "basePath": "/",
   "schemes": ["http"],
   "paths": {
     "/auth/check": {
       "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Authentication"],
         "description": "Check user is logged in and get user & token info.",
         "responses": {
@@ -164,6 +177,11 @@
     },
     "/list/get/{listId}": {
       "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Shopping Lists"],
         "description": "Search a product list with ID.",
         "parameters": [
@@ -192,6 +210,11 @@
     },
     "/list/create": {
       "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Shopping Lists"],
         "description": "Create a new product list.",
         "parameters": [
@@ -223,6 +246,11 @@
     },
     "/list/update": {
       "put": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Shopping Lists"],
         "description": "Update a product list.",
         "parameters": [
@@ -261,8 +289,52 @@
         }
       }
     },
+    "/list/delete": {
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": ["Shopping Lists"],
+        "description": "Delete a product list.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "listId": {
+                  "example": "6668ab2a32f59eb41e6da4a0"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/list/add-item": {
       "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Shopping Lists"],
         "description": "Add new product to a product list.",
         "parameters": [
@@ -303,6 +375,11 @@
     },
     "/list/remove-item": {
       "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Shopping Lists"],
         "description": "Remove existing product from product list.",
         "parameters": [
@@ -340,6 +417,11 @@
     },
     "/product": {
       "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Product"],
         "description": "List all products.",
         "responses": {
@@ -360,6 +442,11 @@
     },
     "/product/{id}": {
       "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Product"],
         "description": "List a product with ID.",
         "parameters": [
@@ -388,6 +475,11 @@
     },
     "/product/add": {
       "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Product"],
         "description": "Create a new product.",
         "parameters": [
@@ -428,6 +520,11 @@
     },
     "/product/update": {
       "put": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Product"],
         "description": "Update existing product info.",
         "parameters": [
@@ -474,6 +571,11 @@
     },
     "/product/delete": {
       "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["Product"],
         "description": "Delete a product.",
         "parameters": [

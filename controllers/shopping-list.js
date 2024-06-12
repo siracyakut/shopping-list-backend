@@ -1,6 +1,7 @@
-import ShoppingList from "../models/shopping-list.js";
+const ShoppingList = require("../models/shopping-list");
+const { validationResult } = require("express-validator");
 
-export const getShoppingListById = async (req, res) => {
+const getShoppingListById = async (req, res) => {
   try {
     const { listId } = req.params;
 
@@ -18,7 +19,14 @@ export const getShoppingListById = async (req, res) => {
   }
 };
 
-export const createShoppingList = async (req, res) => {
+const createShoppingList = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { name } = req.body;
 
@@ -35,7 +43,14 @@ export const createShoppingList = async (req, res) => {
   }
 };
 
-export const addItemToShoppingList = async (req, res) => {
+const addItemToShoppingList = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { listId, itemId } = req.body;
 
@@ -67,7 +82,14 @@ export const addItemToShoppingList = async (req, res) => {
   }
 };
 
-export const updateShoppingList = async (req, res) => {
+const updateShoppingList = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { listId, name, products } = req.body;
 
@@ -94,7 +116,41 @@ export const updateShoppingList = async (req, res) => {
   }
 };
 
-export const removeItemFromShoppingList = async (req, res) => {
+const deleteShoppingList = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
+  try {
+    const { listId } = req.body;
+
+    const findList = await ShoppingList.findById(listId);
+
+    if (!findList)
+      return res.status(404).json({ success: false, data: "List not found!" });
+
+    if (findList._doc.user.toString() !== req.user._id)
+      return res.status(401).json({ success: false, data: "Unauthorized" });
+
+    const list = await ShoppingList.findByIdAndDelete(listId);
+
+    res.status(200).json({ success: true, data: list._doc });
+  } catch (e) {
+    res.status(500).json({ success: false, data: e.message });
+  }
+};
+
+const removeItemFromShoppingList = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { listId, itemId } = req.body;
 
@@ -124,4 +180,13 @@ export const removeItemFromShoppingList = async (req, res) => {
   } catch (e) {
     res.status(500).json({ success: false, data: e.message });
   }
+};
+
+module.exports = {
+  getShoppingListById,
+  createShoppingList,
+  addItemToShoppingList,
+  updateShoppingList,
+  deleteShoppingList,
+  removeItemFromShoppingList,
 };

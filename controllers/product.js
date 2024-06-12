@@ -1,6 +1,7 @@
-import Product from "../models/product.js";
+const Product = require("../models/product");
+const { validationResult } = require("express-validator");
 
-export const getProducts = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
 
@@ -14,7 +15,7 @@ export const getProducts = async (req, res) => {
   }
 };
 
-export const getProductById = async (req, res) => {
+const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -30,7 +31,14 @@ export const getProductById = async (req, res) => {
   }
 };
 
-export const addProduct = async (req, res) => {
+const addProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { name, price, image, description } = req.body;
 
@@ -49,7 +57,14 @@ export const addProduct = async (req, res) => {
   }
 };
 
-export const updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { id, name, price, image, description } = req.body;
 
@@ -73,7 +88,14 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-export const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ success: false, data: errors.array()[0].msg });
+  }
+
   try {
     const { id } = req.body;
 
@@ -87,4 +109,12 @@ export const deleteProduct = async (req, res) => {
   } catch (e) {
     res.status(500).json({ success: false, data: e.message });
   }
+};
+
+module.exports = {
+  getProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
 };
