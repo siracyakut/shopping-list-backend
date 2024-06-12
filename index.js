@@ -7,6 +7,7 @@ import swaggerDocument from "./swagger.json" assert { type: "json" };
 import "dotenv/config";
 
 import bbyRoutes from "./routes/bby.js";
+import productRoutes from "./routes/product.js";
 import authRoutes from "./routes/auth.js";
 import listRoutes from "./routes/shopping-list.js";
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/bby", bbyRoutes);
+app.use("/product", productRoutes);
 app.use("/auth", authRoutes);
 app.use("/list", listRoutes);
 
