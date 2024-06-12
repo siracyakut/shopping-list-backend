@@ -2,12 +2,12 @@
 Smart Shopping List RESTful Web API
 </h1>
 <p align="center">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="license badge"/>
-</p>
-<p align="center">
   <img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="nodejs badge"/>
   <img src="https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white" alt="expressjs badge"/>
   <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="mongodb badge"/>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="license badge"/>
 </p>
 
 ### Project Description
@@ -18,15 +18,16 @@ Smart shopping list restful web api service, providing user creation, editing, v
 - User Collection
 - Shopping List Collection
 - Product Collection
+- Body validation on all routes
 - BestBuy API Integration (search with query or id)
 - Create, update, delete shopping lists
 - Add/remove items from shopping lists
 - Create, update, delete products
 - Create, update user accounts
-
-
 - **Comes with a lot of unit tests (mocha & chai)**
 - **Swagger UI with bearer authentication**
+
+
 
 ### Project Routes
 - **Authentication Routes** (with JWT)
@@ -60,6 +61,8 @@ Smart shopping list restful web api service, providing user creation, editing, v
 
 - **Swagger**
     - Access to Swagger UI (GET /swagger)
+
+
 
 ### Example Unit Tests (run with npm run test)
 
@@ -106,6 +109,8 @@ Smart shopping list restful web api service, providing user creation, editing, v
   28 passing (11s)
 ```
 
+
+
 ### Used Technologies & Packages
 
 - [NodeJS](https://nodejs.org/en "NodeJS") - Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
@@ -122,6 +127,8 @@ Smart shopping list restful web api service, providing user creation, editing, v
 - [chai](https://www.npmjs.com/package/chai "chai")
 - [chai-http](https://www.npmjs.com/package/chai-http "chai-http")
 - [mocha](https://www.npmjs.com/package/mocha "mocha")
+
+
 
 ### License
 
