@@ -116,6 +116,51 @@
         }
       }
     },
+    "/auth/edit": {
+      "put": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": ["Authentication"],
+        "description": "Edit a user account.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "optional"
+                },
+                "surname": {
+                  "example": "optional"
+                },
+                "password": {
+                  "example": "optional"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/bby/product/search": {
       "post": {
         "tags": ["BestBuy"],

@@ -48,5 +48,18 @@ router.post(
   ],
   authController.loginUser,
 );
+router.put(
+  "/edit",
+  authMiddleware,
+  [
+    body("password")
+      .optional()
+      .isStrongPassword()
+      .withMessage("Password must be strong"),
+    body("name").optional().isString().withMessage("Name must be string"),
+    body("surname").optional().isString().withMessage("Surname must be string"),
+  ],
+  authController.editUser,
+);
 
 module.exports = router;

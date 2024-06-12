@@ -88,8 +88,36 @@ const loginUser = async (req, res) => {
   }
 };
 
+const editUser = async (req, res) => {
+  try {
+    const { name, surname, password } = req.body;
+
+    if (!req.user._id)
+      return res.status(401).json({ success: false, data: "Unauthorized" });
+
+    const updateObject = {};
+
+    if (name) updateObject.name = name;
+    if (surname) updateObject.surname = surname;
+    if (password) updateObject.password = await bcrypt.hash(password, 10);
+
+    const findUser = await User.findByIdAndUpdate(req.user._id, updateObject, {
+      new: true,
+    });
+
+    if (findUser) {
+      res.status(200).json({ success: true, data: findUser });
+    } else {
+      res.status(404).json({ success: false, data: "User not found!" });
+    }
+  } catch (e) {
+    res.status(500).json({ success: false, data: e.message });
+  }
+};
+
 module.exports = {
   checkAuth,
   registerUser,
   loginUser,
+  editUser,
 };
