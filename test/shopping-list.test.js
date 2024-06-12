@@ -24,7 +24,7 @@ describe("Shopping Lists", () => {
     chai
       .request(server)
       .get("/list/get/6669cd1a2a29a12c29802223")
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -38,7 +38,7 @@ describe("Shopping Lists", () => {
     chai
       .request(server)
       .get("/list/get/sdgsdghasd12321")
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(500);
         res.body.should.be.a("object");
@@ -51,7 +51,7 @@ describe("Shopping Lists", () => {
     chai
       .request(server)
       .get("/list/get/6668aaf132f59eb41e6da49c")
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(401);
         res.body.should.be.a("object");
@@ -70,7 +70,7 @@ describe("Shopping Lists", () => {
       .request(server)
       .post("/list/create")
       .send(data)
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.a("object");
@@ -89,7 +89,7 @@ describe("Shopping Lists", () => {
       .request(server)
       .post("/list/create")
       .send(data)
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
@@ -109,7 +109,7 @@ describe("Shopping Lists", () => {
       .request(server)
       .put("/list/update")
       .send(data)
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -128,7 +128,7 @@ describe("Shopping Lists", () => {
       .request(server)
       .put("/list/update")
       .send(data)
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
@@ -149,7 +149,7 @@ describe("Shopping Lists", () => {
       .request(server)
       .post("/list/create")
       .send(data)
-      .set("Cookie", `token=${token}`)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.a("object");
@@ -162,7 +162,7 @@ describe("Shopping Lists", () => {
           .request(server)
           .post("/list/add-item")
           .send({ listId: id, itemId: "123" })
-          .set("Cookie", `token=${token}`)
+          .set({ Authorization: `Bearer ${token}` })
           .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.a("object");
@@ -173,7 +173,7 @@ describe("Shopping Lists", () => {
               .request(server)
               .delete("/list/delete")
               .send({ listId: id })
-              .set("Cookie", `token=${token}`)
+              .set({ Authorization: `Bearer ${token}` })
               .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a("object");

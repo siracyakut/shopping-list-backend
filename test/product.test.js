@@ -7,10 +7,24 @@ const server = require("../index");
 chai.use(chaiHttp);
 
 describe("Products", () => {
+  let token = "";
+
+  chai
+    .request(server)
+    .post("/auth/login")
+    .send({
+      email: "darkcik@sirac.com",
+      password: "123456Sirac!",
+    })
+    .end((err, res) => {
+      token = res.body.data.token;
+    });
+
   it("Get list of products", (done) => {
     chai
       .request(server)
       .get("/product")
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -24,6 +38,7 @@ describe("Products", () => {
     chai
       .request(server)
       .get("/product/666997f87751454e6a595127")
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -37,6 +52,7 @@ describe("Products", () => {
     chai
       .request(server)
       .get("/product/df123hdfsh")
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(500);
         res.body.should.be.a("object");
@@ -57,6 +73,7 @@ describe("Products", () => {
       .request(server)
       .post("/product/add")
       .send(data)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.a("object");
@@ -75,6 +92,7 @@ describe("Products", () => {
       .request(server)
       .post("/product/add")
       .send(data)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
@@ -94,6 +112,7 @@ describe("Products", () => {
       .request(server)
       .put("/product/update")
       .send(data)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -113,6 +132,7 @@ describe("Products", () => {
       .request(server)
       .put("/product/update")
       .send(data)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
@@ -136,6 +156,7 @@ describe("Products", () => {
       .request(server)
       .post("/product/add")
       .send(data)
+      .set({ Authorization: `Bearer ${token}` })
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.a("object");
@@ -148,6 +169,7 @@ describe("Products", () => {
           .request(server)
           .delete("/product/delete")
           .send({ id })
+          .set({ Authorization: `Bearer ${token}` })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a("object");
